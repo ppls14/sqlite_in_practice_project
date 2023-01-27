@@ -1,0 +1,41 @@
+import sqlite3
+from sqlite3 import Error
+
+def create_connection(db_file):
+    """Create database connection to a SQLite database and return an object with established connection"""
+    conn = None
+    try:
+        conn = sqlite3.connect(db_file)
+        print(f"Connected to {db_file}, sqlite version {sqlite3.version}")
+        return conn
+    except Error as e:
+        print(e)
+
+    return conn
+
+def execute_sql(conn, sql):
+    """ Execute sql
+   :param conn: Connection object
+   :param sql: a SQL script
+   :return:
+   """
+    try:
+        cur = conn.cursor()
+        cur.execute(sql)
+    except Error as e:
+        print(e)
+
+if __name__ == "__main__":
+
+    author_sql = """
+    CREATE TABLE author(
+        id              integer PRIMARY KEY,
+        name            text,
+        surname         text,
+        born            text,
+        nationality     text,
+        books_written   integer
+    )
+    """
+    conn = create_connection(db_file = "database.db")
+    execute_sql(conn, sql = author_sql)
